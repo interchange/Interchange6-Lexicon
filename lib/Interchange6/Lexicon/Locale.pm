@@ -72,10 +72,6 @@ sub set_record {
     my ($self, $po) = @_;
     my $key = $po->msgid;
 
-    if (exists $self->{records}->{$key}) {
-        warn "Key exists: $key\n";
-    }
-    
     $self->{records}->{$key} = $po;
 }
 
