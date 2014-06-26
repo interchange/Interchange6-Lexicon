@@ -1,0 +1,23 @@
+NAME
+    Interchange6::Lexicon::Import - Import locales for Interchange6
+
+VERSION
+    0.001
+
+ATTRIBUTES
+  lexicon_directory
+    The directory where we store the *.pod files.
+
+  locales
+    Hash reference with locales. The hash values are
+    Interchange6::Lexicon::Locale objects.
+
+  po_encoding
+    Encoding of the *.po files, defaults to `UTF-8'.
+
+  read_locales
+    Read locales from "lexicon_directory".
+
+  write_locales
+    Write locales into "lexicon_directory.
+
