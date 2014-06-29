@@ -1,0 +1,57 @@
+#! /usr/bin/env perl
+#
+# Interchange6::Lexicon::Import
+
+use strict;
+use warnings;
+
+use Locale::PO;
+use Locale::POFileManager;
+use Encode;
+
+use Interchange6::Lexicon::Import;
+use Interchange6::Lexicon::Import::LocaleTab;
+
+# check commandline options
+unless (@ARGV == 2) {
+    die "$0: Need locale file from IC5 and i18n basedir for IC6.\n";
+}
+
+# configuration
+my $file = shift;
+my $basedir = shift;
+
+my $lexicon = Interchange6::Lexicon::Import->new(
+    lexicon_directory => $basedir
+   );
+
+$lexicon->read_locales;
+
+my $ic5 = Interchange6::Lexicon::Import::LocaleTab->new({
+    filename => $file,
+    locales => $lexicon->locales,
+});
+
+my @langs = $ic5->read_locales;
+
+# loop over records
+my ($record, %entries, $po);
+
+my $enc_filter = sub {
+    return encode('utf-8', decode('ISO-8859-1', $_[0]));
+};
+
+# create PO files
+for my $lang (@langs) {
+    my $filename = "$basedir/$lang.po";
+
+    Locale::PO->save_file_fromhash($filename, $ic5->locales->{$lang}->records);
+}
+
+my $poman = Locale::POFileManager->new(
+    base_dir => $basedir,
+    canonical_language => 'en_US',
+);
+
+my %missing = $poman->find_missing;
+$poman->add_stubs;

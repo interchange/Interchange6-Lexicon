@@ -19,11 +19,13 @@ WriteMakefile(
         'Moo' => 0,
         'MooX::Types::MooseLike' => 0,
         'Locale::PO' => 0,
+        'Locale::POFileManager' => 0,
         'Sub::Quote' => 0,
         'Text::RecordParser' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Interchange6-Lexicon*' },
+    EXE_FILES => [ 'scripts/iclocales2gettext' ],
     META_MERGE        => {
         resources => {
             repository  => 'https://github.com/interchange/Interchange6-Lexicon.git',
