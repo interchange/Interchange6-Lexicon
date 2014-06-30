@@ -20,6 +20,12 @@ unless (@ARGV == 2) {
 # configuration
 my $file = shift;
 my $basedir = shift;
+my $encoding = shift;
+
+unless ($encoding) {
+    $encoding = 'latin1';
+    warn "No encoding passed, assuming $encoding\n";
+}
 
 my $lexicon = Interchange6::Lexicon::Import->new(
     lexicon_directory => $basedir
@@ -29,6 +35,7 @@ $lexicon->read_locales;
 
 my $ic5 = Interchange6::Lexicon::Import::LocaleTab->new({
     filename => $file,
+    encoding => $encoding,
     locales => $lexicon->locales,
 });
 
@@ -37,15 +44,13 @@ my @langs = $ic5->read_locales;
 # loop over records
 my ($record, %entries, $po);
 
-my $enc_filter = sub {
-    return encode('utf-8', decode('ISO-8859-1', $_[0]));
-};
-
 # create PO files
 for my $lang (@langs) {
     my $filename = "$basedir/$lang.po";
-
-    Locale::PO->save_file_fromhash($filename, $ic5->locales->{$lang}->records);
+    print "Updating $filename\n";
+    # output file in utf-8, as per doc.
+    Locale::PO->save_file_fromhash($filename, $ic5->locales->{$lang}->records,
+                                   'utf-8');
 }
 
 my $poman = Locale::POFileManager->new(
