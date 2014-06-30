@@ -103,9 +103,7 @@ sub read_locales {
 
 sub _encode_filter {
     my ($self, $text) = @_;
-
-    return $text;
-    return encode('utf-8', decode($self->encoding, $text));
+    return decode($self->encoding, $text);
 }
 
 sub _record_parser {
