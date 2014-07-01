@@ -24,7 +24,6 @@ my $encoding = shift;
 
 unless ($encoding) {
     $encoding = 'latin1';
-    warn "No encoding passed, assuming $encoding\n";
 }
 
 my $lexicon = Interchange6::Lexicon::Import->new(
@@ -47,7 +46,7 @@ my ($record, %entries, $po);
 # create PO files
 for my $lang (@langs) {
     my $filename = "$basedir/$lang.po";
-    print "Updating $filename\n";
+
     # output file in utf-8, as per doc.
     Locale::PO->save_file_fromhash($filename, $ic5->locales->{$lang}->records,
                                    'utf-8');
