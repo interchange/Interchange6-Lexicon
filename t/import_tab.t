@@ -41,9 +41,6 @@ my ($msgid, $msgstr);
 $msgid = $po_de->{'"About Us"'}->msgid;
 $msgstr = $po_de->{'"About Us"'}->msgstr;
 
-warn "MSGID: $msgid\n";
-warn "MSGSTR: $msgstr\n";
-
 is $msgid, '"About Us"', "About Us msgid"
   or diag "Msgid: $msgid";
 
