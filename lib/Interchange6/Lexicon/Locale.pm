@@ -7,6 +7,7 @@ use Moo;
 use Sub::Quote;
 use Locale::PO;
 
+# keep this in sync with Interchange6::Lexicon::Import::LocaleTab;
 use constant {
     SET_RECORD_NOCHANGE => 0,
     SET_RECORD_NEW => 1,
