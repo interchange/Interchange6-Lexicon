@@ -7,6 +7,12 @@ use Moo;
 use Sub::Quote;
 use Locale::PO;
 
+use constant {
+    SET_RECORD_NOCHANGE => 0,
+    SET_RECORD_NEW => 1,
+    SET_RECORD_CHANGED => 2,
+};
+
 =head1 NAME
 
 Interchange6::Lexicon::Locale - Locale object
@@ -31,7 +37,8 @@ Locale records.
 =cut
 
 has records => (
-    is => 'ro',
+    is => 'rwp',
+    default => sub { return {} },
 );
 
 =head2 po_encoding
@@ -71,8 +78,20 @@ Set PO record. Parameter is C<Locale::PO> object.
 sub set_record {
     my ($self, $po) = @_;
     my $key = $po->msgid;
-
-    $self->{records}->{$key} = $po;
+    my $ex;
+    if (exists $self->records->{$key}) {
+        if ($self->records->{$key}->msgstr eq $po->msgstr) {
+            $ex = SET_RECORD_NOCHANGE;
+        }
+        else {
+            $ex = SET_RECORD_CHANGED;
+        }
+    }
+    else {
+        $ex = SET_RECORD_NEW;
+    }
+    $self->records->{$key} = $po;
+    return $ex;
 }
 
 1;
