@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::More;
+use Test::More tests => 6;
 use Interchange6::Lexicon::Import::LocaleTab;
 use Interchange6::Lexicon::Locale;
 use Locale::PO;
@@ -34,6 +34,12 @@ $record_new->msgid('XXXXXXXXXX');
 $record_new->msgstr('This is a test');
 
 is($locale->set_record($record_new), 1, "New record returns 1");
+
+$record_new = Locale::PO->new;
+
+$record_new->msgid('XXXXXXXXXX');
+$record_new->msgstr('This is a test');
+
 is($locale->set_record($record_new), 0, "No changes: return 0 ");
 
 my $record_updated = Locale::PO->new;
@@ -42,6 +48,3 @@ $record_updated->msgstr('This is a test XXXXX');
 
 is($locale->set_record($record_updated), 2, "Record updated returns 2");
 
-
-
-done_testing;
