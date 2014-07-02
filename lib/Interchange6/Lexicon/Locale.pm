@@ -66,7 +66,7 @@ sub read_from_file {
     my ($href);
 
     $href = Locale::PO->load_file_ashash($filename, $self->po_encoding);
-    $self->{records} = $href;
+    $self->_set_records($href);
 }
 
 =head2 set_record($po)
